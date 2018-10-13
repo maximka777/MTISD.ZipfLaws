@@ -1,12 +1,13 @@
 import os
+import codecs
 
 
 def display_title_bar():
     os.system('cls')
 
-    print("\t**********************************************")
-    print("\t***************** Zipf Laws ******************")
-    print("\t**********************************************")
+    print("\n**********************************************")
+    print("***************** Zipf Laws ******************")
+    print("**********************************************")
 
 
 def quit():
@@ -25,8 +26,8 @@ def show_available_articles():
     print("\nSelect one of the following Articles:")
     i = 0
     for text in texts:
-        print("[" + str(i+1) + "] " + text)
         i += 1
+        print("[" + str(i) + "] " + text)
     print("[m] Menu")
     return input("Your choice: ")
 
@@ -35,10 +36,39 @@ def show_available_topics():
     print("\nSelect one of the following topics:")
     i = 0
     for topic in topics:
-        print("[" + str(i+1) + "] " + topic)
         i += 1
+        print("[" + str(i) + "] " + topic)
     print("[m] Menu")
     return input("Your choice: ")
+
+
+def find_key_words():
+    article = show_available_articles()
+    if article == 'm':
+        display_title_bar()
+    else:
+        print('\nHere we will define article key words!\n')
+        file_path = diff_texts_path + texts[int(article)-1]
+        print("File path: " + file_path)
+        file_obj = codecs.open(file_path, "r", "utf_8_sig")
+        file_text = file_obj.read()
+        file_obj.close()
+
+        # for line in file_text:
+        #    print(line)
+        print(file_text)
+
+
+def define_topic():
+    article = show_available_articles()
+    if article == 'm':
+        display_title_bar()
+    else:
+        topic = show_available_topics()
+        if topic == 'm':
+            display_title_bar()
+        else:
+            print('\nHere we will define article topic!\n')
 
 
 texts = [
@@ -52,6 +82,8 @@ topics = [
     'olympic games'
 ]
 
+diff_texts_path = '.\data\diff_texts\\'
+
 
 def main():
     choice = ''
@@ -63,22 +95,10 @@ def main():
         choice = get_user_choice()
 
         if choice == '1':
-            article = show_available_articles()
-            if article == 'm':
-                display_title_bar()
-            else:
-                print('\nHere we will define article key words!\n')
+            find_key_words()
 
         elif choice == '2':
-            article = show_available_articles()
-            if article == 'm':
-                display_title_bar()
-            else:
-                topic = show_available_topics()
-                if topic == 'm':
-                    display_title_bar()
-                else:
-                    print('\nHere we will define article topic!\n')
+            define_topic()
 
         elif choice == 'q':
             quit()
