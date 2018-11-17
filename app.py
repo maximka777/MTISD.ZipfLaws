@@ -1,5 +1,6 @@
 import os
 import codecs
+from FirstLaw import FirstLaw
 
 
 def display_title_bar():
@@ -53,10 +54,9 @@ def find_key_words():
         file_obj = codecs.open(file_path, "r", "utf_8_sig")
         file_text = file_obj.read()
         file_obj.close()
-
-        # for line in file_text:
-        #    print(line)
-        print(file_text)
+        first_law = FirstLaw(file_text, 3, 7)
+        print("Key words:")
+        print(first_law.get_key_words())
 
 
 def define_topic():
