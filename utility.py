@@ -1,5 +1,4 @@
 import re
-from collections import Counter
 
 RU_NOISE_WORDS = [
     "без", "вне", "для", "изо", "меж", "над", "обо", "ото", "под", "при", "про",
@@ -22,6 +21,14 @@ def make_good_word(word):
 def get_words_from_text(text):
     words = re.split('\s', text)
     return list(filter(lambda w: len(w) > 0, map(make_good_word, words)))
+
+
+def is_good_word(word):
+    return word not in RU_NOISE_WORDS and word not in EN_NOISE_WORDS and len(word) > 2
+
+
+def filter_words(words):
+    return list(filter(is_good_word, words))
 
 
 def count_words_probability(words):
