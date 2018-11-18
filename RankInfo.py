@@ -16,3 +16,9 @@ class RankInfo:
 
     def set_words(self, words):
         self.words = words
+
+    def get_c(self):
+        # C constant
+        # English ~ 0.1
+        # Russian ~ 0.06 - 0.07
+        return self.rank * self.frequency
