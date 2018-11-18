@@ -1,1 +1,1 @@
-# MTISD.ZipLaws
+# Zipf's rules
