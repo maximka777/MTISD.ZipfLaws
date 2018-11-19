@@ -45,7 +45,7 @@ class TextsDatabase:
 
     @staticmethod
     def get_rubric(file_name):
-        return file_name.split('_')[1]
+        return file_name.split('_')[0]
 
     def read_texts(self):
         os.chdir(TEXTS_DIR)

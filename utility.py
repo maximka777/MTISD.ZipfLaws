@@ -1,19 +1,7 @@
 import re
 
+from noise_words import RU_NOISE_WORDS, EN_NOISE_WORDS, NOTICED_NOISE_WORDS
 from texts_db import get_text
-
-RU_NOISE_WORDS = [
-    "без", "вне", "для", "изо", "меж", "над", "обо", "ото", "под", "при", "про",
-    "она", "оно", "они", "мой", "ваш", "наш", "его", "кто", "что", "чей", "где", "тот", "сей", "сам",
-    "как", "так", "еще", "все", "ибо", "или", "тем", "чем", "тех"
-]
-
-EN_NOISE_WORDS = [
-    "the", "for", "and", "that", "this", "are",
-    "how", "who", "where", "what", "whose",
-    "some", "any", "not",
-    "you", "your", "yours", "she", "her", "his"
-]
 
 
 def make_good_word(word):
@@ -30,7 +18,10 @@ def get_words_from_text(text):
 
 
 def is_good_word(word):
-    return word not in RU_NOISE_WORDS and word not in EN_NOISE_WORDS and len(word) > 2
+    return word not in RU_NOISE_WORDS and \
+           word not in EN_NOISE_WORDS and \
+           word not in NOTICED_NOISE_WORDS \
+           and len(word) > 2
 
 
 def filter_words(words):

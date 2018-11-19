@@ -26,15 +26,18 @@ class TextRubricator:
     def _init_attributes(self):
         keywords = list(map(cut_key_words, WeightsMethod(get_texts(self.training_texts)).get_key_words()))
         self.attributes = flat_nested_2(keywords)
+        print('Attributes:', self.attributes)
 
     def _init_unique_rubrics(self):
         self.unique_rubrics = []
         for rubric in list(map(lambda t: t.rubric, self.training_texts)):
             if rubric not in self.unique_rubrics:
                 self.unique_rubrics.append(rubric)
+        print('Rubrics:', self.unique_rubrics)
 
     def _init_perceptrons(self):
-        self.perceptrons = [Perceptron(len(self.attributes)) for _ in range(len(self.unique_rubrics))]
+        self.perceptrons = \
+            [Perceptron(len(self.attributes), epochs=10000, learning_rate=0.1) for _ in range(len(self.unique_rubrics))]
 
     def _init_training_texts_attributes_vectors(self):
         for text in self.training_texts:
@@ -49,11 +52,24 @@ class TextRubricator:
 
     def rubricate(self, testing_texts):
         probabilities = []
-        for text in testing_texts:
-            text_attributes_vector = [word_frequency(word, text.text) for word in self.attributes]
+        keywords_by_text = get_keywords(testing_texts)
+        for text_id, text in enumerate(testing_texts):
+            keywords = keywords_by_text[text_id]
+            text_attributes_vector = \
+                [word_frequency(word, text.text) if word in keywords else 0 for word in self.attributes]
             percetrons_outputs = [perceptron.predict(text_attributes_vector) for perceptron in self.perceptrons]
             max_perceptron_value = max(percetrons_outputs)
             max_perceptron_value_idx = percetrons_outputs.index(max_perceptron_value)
             text.rubric = self.unique_rubrics[max_perceptron_value_idx]
             probabilities.append(max_perceptron_value)
         return testing_texts, probabilities
+
+
+def get_keywords(texts):
+    keywords = [[None]]
+    low_weight = 1
+    while sum(map(lambda words: len(words), keywords)) / len(keywords) < 3 and low_weight > 0.1:
+        keywords = WeightsMethod(get_texts(texts), low_weight=low_weight).get_key_words()
+        low_weight /= 2
+    return keywords
+

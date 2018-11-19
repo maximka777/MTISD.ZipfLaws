@@ -18,7 +18,9 @@ def main():
     text_rubricator = TextRubricator(training_texts)
     text_rubricator.init()
     text_rubricator.train()
-    print(text_rubricator.rubricate(testing_texts))
+    texts, probabilities = text_rubricator.rubricate(testing_texts)
+    print('Result texts:', texts)
+    print('With probabilities:', probabilities)
 
 
 if __name__ == '__main__':
