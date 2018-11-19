@@ -21,6 +21,19 @@ def get_file_locale(file_name):
             return locale
 
 
+class Text:
+    def __init__(self, rubric, text):
+        self.rubric = rubric
+        self.text = text
+
+    def __repr__(self):
+        return 'Text{ rubric: %s, text: %s }' % (self.rubric, self.text[:30] + '...')
+
+
+def get_text(text):
+    return text.text
+
+
 class TextsDatabase:
     def __init__(self):
         self.texts = {
@@ -30,13 +43,18 @@ class TextsDatabase:
         }
         self.read_texts()
 
+    @staticmethod
+    def get_rubric(file_name):
+        return file_name.split('_')[1]
+
     def read_texts(self):
         os.chdir(TEXTS_DIR)
         file_names = os.listdir('.')
         for file_name in file_names:
             try:
                 with open(file_name, 'r', encoding='utf-8') as file:
-                    self.texts[get_file_locale(file_name)].append(file.read())
+                    rubric = self.get_rubric(file_name)
+                    self.texts[get_file_locale(file_name)].append(Text(rubric, file.read()))
             except OSError as e:
                 print('Error during reading file', file_name, e)
 

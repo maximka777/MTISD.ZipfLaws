@@ -8,10 +8,10 @@ class ZipfMediator:
         self.texts_db = TextsDatabase()
 
     def check_first_rule(self):
-        ru_texts = self.texts_db.get_texts_by_locale(RU)
+        ru_texts = map(get_text, self.texts_db.get_texts_by_locale(RU))
         words = [get_words_from_text(text) for text in ru_texts]
         first_zipf_rule(words)
-        en_texts = self.texts_db.get_texts_by_locale(EN)
+        en_texts = map(get_text, self.texts_db.get_texts_by_locale(EN))
         words = [get_words_from_text(text) for text in en_texts]
         first_zipf_rule(words)
 
