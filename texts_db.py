@@ -12,8 +12,6 @@ LOCALES = [
     BY
 ]
 
-TEXTS_DIR = './texts'
-
 
 def get_file_locale(file_name):
     for locale in LOCALES:
@@ -35,7 +33,8 @@ def get_text(text):
 
 
 class TextsDatabase:
-    def __init__(self):
+    def __init__(self, path_to_texts_dir):
+        self.path_to_texts_dir = path_to_texts_dir
         self.texts = {
             RU: [],
             EN: [],
@@ -48,7 +47,8 @@ class TextsDatabase:
         return file_name.split('_')[0]
 
     def read_texts(self):
-        os.chdir(TEXTS_DIR)
+        current_cwd = os.getcwd()
+        os.chdir(self.path_to_texts_dir)
         file_names = os.listdir('.')
         for file_name in file_names:
             try:
@@ -57,6 +57,7 @@ class TextsDatabase:
                     self.texts[get_file_locale(file_name)].append(Text(rubric, file.read()))
             except OSError as e:
                 print('Error during reading file', file_name, e)
+        os.chdir(current_cwd)
 
     def get_texts_by_locale(self, locale):
         return self.texts[locale]
