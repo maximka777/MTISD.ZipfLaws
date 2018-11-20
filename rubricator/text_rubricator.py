@@ -1,7 +1,7 @@
 import numpy
 
-from external.WeightsMethod import WeightsMethod
 from external.perceptron import Perceptron
+from external_adapters import get_key_words_from_texts
 from utility import get_texts, word_frequency, flat_nested_2
 
 
@@ -24,7 +24,7 @@ class TextRubricator:
         self._init_training_texts_attributes_vectors()
 
     def _init_attributes(self):
-        keywords = list(map(cut_key_words, WeightsMethod(get_texts(self.training_texts)).get_key_words()))
+        keywords = list(map(cut_key_words, get_key_words_from_texts(get_texts(self.training_texts))))
         self.attributes = flat_nested_2(keywords)
         print('Attributes:', self.attributes)
 
@@ -69,7 +69,7 @@ def get_keywords(texts):
     keywords = [[None]]
     low_weight = 1
     while sum(map(lambda words: len(words), keywords)) / len(keywords) < 3 and low_weight > 0.1:
-        keywords = WeightsMethod(get_texts(texts), low_weight=low_weight).get_key_words()
+        keywords = get_key_words_from_texts(get_texts(texts))
         low_weight /= 2
     return keywords
 

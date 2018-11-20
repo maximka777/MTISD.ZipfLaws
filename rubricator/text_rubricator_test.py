@@ -1,4 +1,4 @@
-from text_rubricator import TextRubricator
+from rubricator.text_rubricator import TextRubricator
 from texts_db import TextsDatabase, RU
 
 
