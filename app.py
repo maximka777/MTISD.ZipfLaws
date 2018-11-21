@@ -21,8 +21,9 @@ class ZipfMediator:
 
 def get_user_option():
     print('''
-1 - Zipf's 1st rule
-2 - Zipf's 2st rule
+1 - Zipf's 1st rule (rank - frequency)
+2 - Zipf's 2st rule (quantity - frequency)
+3 - Weights
 0 - Quit
     ''')
     return input('Select option: ')

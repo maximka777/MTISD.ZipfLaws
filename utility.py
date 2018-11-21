@@ -28,17 +28,6 @@ def filter_words(words):
     return list(filter(is_good_word, words))
 
 
-def count_words_probability(words):
-    counter = {}
-    for word in words:
-        if word not in counter:
-            counter[word] = 0
-        counter[word] += 1
-    for key in counter.keys():
-        counter[key] = counter[key] / len(words)
-    return counter
-
-
 def word_frequency(word, text):
     counter = 0
     words = get_words_from_text(text)
