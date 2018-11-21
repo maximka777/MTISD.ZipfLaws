@@ -31,6 +31,7 @@ def first_zipf_rule(words):
     for text_words in words:
         words_counter = count_words(text_words)
         total_words = len(text_words)
+
         # making array of lists with unique word counts and with one word from each rank-group
         unique_ranks_values = []
         unique_ranks_words = []
@@ -41,6 +42,7 @@ def first_zipf_rule(words):
         rank_count_pairs = list(zip(unique_ranks_words, unique_ranks_values))
         rank_count_pairs.sort(key=lambda i: -i[1])
         unique_ranks_values.sort(key=lambda a: -a)
+
         # printing parameters of 1st Zipf's rule
         print('-------------------------------------------------------')
         print('Words:\n', rank_count_pairs)
@@ -58,4 +60,4 @@ def first_zipf_rule(words):
 
 
 def second_zipf_rule(words):
-    return words
+    pass
