@@ -3,7 +3,7 @@ from texts_db import TextsDatabase, RU
 
 
 def is_not_rubricated(text):
-    return text.rubric.startswith('unknown')
+    return text.rubric == 'unknown'
 
 
 def is_rubricated(text):
@@ -11,7 +11,7 @@ def is_rubricated(text):
 
 
 def main():
-    texts_db = TextsDatabase('../texts')
+    texts_db = TextsDatabase('../RubricatorTexts')
     ru_texts = texts_db.get_texts_by_locale(RU)
     training_texts = list(filter(is_rubricated, ru_texts))
     testing_texts = list(filter(is_not_rubricated, ru_texts))

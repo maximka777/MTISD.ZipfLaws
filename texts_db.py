@@ -13,51 +13,52 @@ LOCALES = [
 ]
 
 
-def get_file_locale(file_name):
-    for locale in LOCALES:
-        if file_name.endswith('_' + locale + FILE_EXTENSION):
-            return locale
-
-
 class Text:
-    def __init__(self, rubric, text):
+    def __init__(self, file_name, rubric, text, locale):
         self.rubric = rubric
         self.text = text
+        self.locale = locale
+        self.keywords = []
+        self.file_name = file_name
 
     def __repr__(self):
-        return 'Text{ rubric: %s, text: %s }' % (self.rubric, self.text[:30] + '...')
+        return 'Text{ file name: %s, rubric: %s, text: %s, locale: %s }' % (self.file_name, self.rubric,
+                                                                            self.text[:20] + '...',
+                                                                            self.locale)
 
 
 def get_text(text):
     return text.text
 
 
-class TextsDatabase:
-    def __init__(self, path_to_texts_dir):
-        self.path_to_texts_dir = path_to_texts_dir
-        self.texts = {
-            RU: [],
-            EN: [],
-            BY: []
-        }
-        self.read_texts()
+def get_rubric(text):
+    return text.rubric
 
-    @staticmethod
-    def get_rubric(file_name):
-        return file_name.split('_')[0]
+
+class TextsDatabase:
+    def __init__(self, texts_directory_path):
+        self.texts_directory_path = texts_directory_path
+        self.texts = []
+        self.read_texts()
 
     def read_texts(self):
         current_cwd = os.getcwd()
-        os.chdir(self.path_to_texts_dir)
-        file_names = os.listdir('.')
-        for file_name in file_names:
-            try:
-                with open(file_name, 'r', encoding='utf-8') as file:
-                    rubric = self.get_rubric(file_name)
-                    self.texts[get_file_locale(file_name)].append(Text(rubric, file.read()))
-            except OSError as e:
-                print('Error during reading file', file_name, e)
+        os.chdir(self.texts_directory_path)
+        for locale in LOCALES:
+            os.chdir(locale)
+            rubrics = os.listdir('.')
+            for rubric in rubrics:
+                os.chdir(rubric)
+                file_names = os.listdir('.')
+                for file_name in file_names:
+                    try:
+                        with open(file_name, 'r', encoding='utf-8') as file:
+                            self.texts.append(Text(file_name, rubric, file.read(), locale))
+                    except OSError as e:
+                        print('Error during reading file', file_name, e)
+                os.chdir('..')
+            os.chdir('..')
         os.chdir(current_cwd)
 
     def get_texts_by_locale(self, locale):
-        return self.texts[locale]
+        return list(filter(lambda x: x.locale == locale, self.texts))

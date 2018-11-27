@@ -41,7 +41,9 @@ class TextRubricator:
 
     def _init_training_texts_attributes_vectors(self):
         for text in self.training_texts:
-            attributes_vector = [word_frequency(word, text.text) for word in self.attributes]
+            # attributes_vector = [word_frequency(word, text.text) for word in self.attributes]
+            # XXX: used 1 instead of frequency
+            attributes_vector = [1 if word in text.text else 0 for word in self.attributes]
             self.training_texts_attributes_vectors.append(attributes_vector)
 
     def train(self):
@@ -55,8 +57,10 @@ class TextRubricator:
         keywords_by_text = get_keywords(testing_texts)
         for text_id, text in enumerate(testing_texts):
             keywords = keywords_by_text[text_id]
+            # XXX: used 1 instead of frequency
+            # [word_frequency(word, text.text) if word in keywords else 0 for word in self.attributes]
             text_attributes_vector = \
-                [word_frequency(word, text.text) if word in keywords else 0 for word in self.attributes]
+                [1 if word in keywords else 0 for word in self.attributes]
             percetrons_outputs = [perceptron.predict(text_attributes_vector) for perceptron in self.perceptrons]
             max_perceptron_value = max(percetrons_outputs)
             max_perceptron_value_idx = percetrons_outputs.index(max_perceptron_value)

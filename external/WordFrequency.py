@@ -15,11 +15,12 @@ class WordFrequency:
     def add(self):
         self.count = self.count + 1
 
-    def set_weight(self, inverse_frequency):
-        self.weight = self.get_frequency() * inverse_frequency
+    def calc_weight(self):
+        self.weight = self.get_frequency() * self.inverse_frequency
 
     def set_inverse_frequency(self, inverse_frequency):
         self.inverse_frequency = inverse_frequency
+        self.calc_weight()
 
     def get_frequency(self):
         return self.count / self.total

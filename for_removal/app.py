@@ -1,17 +1,17 @@
 from texts_db import *
 from utility import get_words_from_text
-from zipf import first_zipf_rule
+from for_removal.zipf import first_zipf_rule
 
 
 class ZipfMediator:
     def __init__(self):
-        self.texts_db = TextsDatabase('./texts')
+        self.texts_db = TextsDatabase('../TestTexts')
 
     def check_first_rule(self):
-        ru_texts = map(get_text, self.texts_db.get_texts_by_locale(RU))
+        ru_texts = list(map(get_text, self.texts_db.get_texts_by_locale(RU)))
         words = [get_words_from_text(text) for text in ru_texts]
         first_zipf_rule(words)
-        en_texts = map(get_text, self.texts_db.get_texts_by_locale(EN))
+        en_texts = list(map(get_text, self.texts_db.get_texts_by_locale(EN)))
         words = [get_words_from_text(text) for text in en_texts]
         first_zipf_rule(words)
 
