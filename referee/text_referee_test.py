@@ -1,8 +1,9 @@
 import re
 
-from external_adapters import get_key_words_from_text
+from external_adapters import get_key_words_from_texts
 from referee.text_referee import TextReferee, Sentence
 from texts_db import TextsDatabase, RU
+from utility import get_texts
 
 REGEXP_FOR_SPLITTING_ON_SENTENCES = r'(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s'
 
@@ -18,9 +19,17 @@ def save_text_to_file(text):
 
 
 def main():
-    texts_db = TextsDatabase('../texts')
-    referee = TextReferee(texts_db.get_texts_by_locale(RU)[0].text, get_key_words_from_text, split_on_sentences)
-    save_text_to_file(referee.do_it(50))
+    texts_db = TextsDatabase('../TextsForTesting/RubricatorTexts')
+
+    ru_texts = texts_db.get_texts_by_locale(RU)
+
+    text_number = 0
+
+    def get_key_words_from_text(text):
+        return get_key_words_from_texts(get_texts(ru_texts), 100)[text_number]
+
+    referee = TextReferee(ru_texts[text_number].text, get_key_words_from_text, split_on_sentences)
+    save_text_to_file(referee.do_it(20))
 
 
 if __name__ == '__main__':

@@ -6,12 +6,14 @@ from utility import filter_words, get_words_from_text
 
 
 class WeightsMethod:
-    def __init__(self, texts, lowest_weight):
+    def __init__(self, texts, lowest_weight, maximum_keywords):
         self.list_of_words_lists = []  # [[word, ...]]
         self.words_inverse_frequencies = []  # inverse frequencies of all words [inverse_frequency, ...]
         self.list_of_words_frequencies_lists = []  # [[frequency, ...]]
         self.lowest_weight = lowest_weight  # lowest weight
         self.texts_total_count = len(texts)
+
+        self.maximum_keywords = maximum_keywords
 
         self.inverse_frequencies = {}
         self.frequencies = {}
@@ -36,7 +38,7 @@ class WeightsMethod:
             text_frequencies = self.frequencies[text_idx]
             items = list(text_frequencies.values())
             items.sort(key=lambda x: -x.weight)
-            items = items[:20]
+            items = items[:self.maximum_keywords]
             table = PrettyTable()
 
             table.field_names = ['Word', 'Weight']

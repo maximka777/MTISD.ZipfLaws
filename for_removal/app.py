@@ -5,7 +5,7 @@ from for_removal.zipf import first_zipf_rule
 
 class ZipfMediator:
     def __init__(self):
-        self.texts_db = TextsDatabase('../TestTexts')
+        self.texts_db = TextsDatabase('../TextsForTesting/TestTexts')
 
     def check_first_rule(self):
         ru_texts = list(map(get_text, self.texts_db.get_texts_by_locale(RU)))

@@ -2,8 +2,8 @@ from external.SecondLaw import SecondLaw
 from external.WeightsMethod import WeightsMethod
 
 
-def get_key_words_from_texts(texts):
-    weights_method = WeightsMethod(texts, 0.001)
+def get_key_words_from_texts(texts, number):
+    weights_method = WeightsMethod(texts, 0.001, number)
     return weights_method.get_keywords(True)
 
 
