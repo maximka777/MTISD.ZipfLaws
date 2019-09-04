@@ -25,11 +25,13 @@ def main():
 
     text_number = 0
 
+    percent = int(input('Percentage: '))
+
     def get_key_words_from_text(text):
         return get_key_words_from_texts(get_texts(ru_texts), 100)[text_number]
 
     referee = TextReferee(ru_texts[text_number].text, get_key_words_from_text, split_on_sentences)
-    save_text_to_file(referee.do_it(20))
+    save_text_to_file(referee.do_it(percent))
 
 
 if __name__ == '__main__':
